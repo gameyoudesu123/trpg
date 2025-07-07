@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>AI Text RPG - スキル保管庫</title>
+</head>
+<body>
+    <div class="container">
+        <div class="header">.:*~*:. スキル保管庫 .:*~*:.</div>
+        <p style="text-align: center;">（ここは、冒険者が自らの技を記録し、研鑽するための静かな場所だ。）</p>
+
+        <div class="hub-panel" style="margin-top:20px;">
+            <h3>--- [キャラクター選択] -------------------</h3>
+            <p>▼ スキルを管理するキャラクターを選択してください ▼</p>
+            <ul>
+                {% for member in party %}
+                <li><a href="{{ url_for('skill_vault_manage', character_id=member.id) }}">[ {{ loop.index }} ] {{ member.name }}</a></li>
+                {% endfor %}
+            </ul>
+            <hr>
+            <ul>
+                <li><a href="{{ url_for('hub') }}">[戻る] 拠点に戻る</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

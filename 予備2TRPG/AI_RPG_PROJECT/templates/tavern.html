@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>AI Text RPG - 酒場</title>
+</head>
+<body>
+    <div class="container">
+        <p style="text-align: center;">（酒場には、様々な背景を持つ冒険者たちが集い、情報を交換したり、新たな仲間を探したりしているようだ。）</p>
+        <div class="header">.:*~*:. 酒場 .:*~*:.</div>
+        
+        <div class="hub-menu">
+            
+            <div class="hub-panel">
+                <h3>🙋 仲間を探す</h3>
+                <ul>
+                    <li><a href="{{ url_for('find_companions') }}">[1] ランダムに仲間候補3人を探す (現在のパーティ人数: 1/4 名)</a></li>
+                    <li><a href="#">[2] 盾役（前衛系）の仲間候補3人を探す</a></li>
+                    <li><a href="#">[3] 攻撃的前衛の仲間候補3人を探す</a></li>
+                    <li><a href="#">[4] 斥候系（後衛物理）の仲間候補3人を探す</a></li>
+                    <li><a href="#">[5] 魔法攻撃職（後衛系）の仲間候補3人探す</a></li>
+                    <li><a href="#">[6] 回復・支援職（後衛系）の仲間候補3人を探す</a></li>
+                </ul>
+            </div>
+            
+            <div class="hub-panel">
+                <h3>👥 パーティ管理</h3>
+                <ul>
+                    <li><a href="#">[7] パーティ編成を変更する</a></li>
+                    <li><a href="#">[8] 仲間の様子を見る (ステータス詳細)</a></li>
+                </ul>
+                <h3>💬 仲間との交流</h3>
+                <ul>
+                    <li><a href="#">[9] 仲間と話す</a></li>
+                </ul>
+            </div>
+
+            <div class="hub-panel" style="grid-column: 1 / -1;">
+                <h3>✈️ 移動 / 🚪 施設を出る</h3>
+                <ul>
+                    <li><a href="#">[10] 工房へ行く</a></li>
+                    <li><a href="#">[11] 道具屋へ行く</a></li>
+                    <li><a href="#">[12] 倉庫へ行く</a></li>
+                    <li><a href="#">[13] スキル保管庫へ行く</a></li>
+                    <li><a href="#">[14] ダンジョンへ向かう</a></li>
+                    <li><a href="{{ url_for('hub') }}">[15] 酒場を出る (拠点メインメニューへ戻る)</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>AI Text RPG - 拠点</title>
+</head>
+<body>
+    <div class="container">
+        <div class="header">.:*~*:. 拠点 .:*~*:.</div>
+        <p style="text-align: center; color: #ffeb99;">現在のWorldTier: {{ world_tier }}</p>
+        
+        <div class="hub-menu">
+            <div class="hub-panel">
+                <h3>🗺️ 冒険の準備</h3>
+                <ul>
+                    <li><a href="{{ url_for('dungeon_select') }}">[1] ダンジョンへ向かう</a></li>
+                    <li><a href="#">[2] 救済の回廊へ向かう</a></li>
+                </ul>
+            </div>
+            <div class="hub-panel">
+                <h3>💪 キャラクター強化</h3>
+                <ul>
+                    <li><a href="#">[3] 【装備管理】</a></li>
+                    <li><a href="#">[4] 【お気に入りアイテム登録】</a></li>
+                    <li><a href="{{ url_for('skill_vault') }}">[5] 【スキル保管庫】</a></li>
+                </ul>
+            </div>
+            <div class="hub-panel">
+                <h3>🏘️ 施設</h3>
+                <ul>
+                    <li><a href="#">[6] 酒場へ行く</a></li>
+                    <li><a href="{{ url_for('workshop') }}">[7] 工房へ行く</a></li>
+                    <li><a href="{{ url_for('item_shop') }}">[8] 道具屋へ行く</a></li>
+                </ul>
+            </div>
+            <div class="hub-panel">
+                <h3>📦 倉庫</h3>
+                <ul>
+                    <li><a href="#">[9] 【装備倉庫】</a></li>
+                    <li><a href="#">[10] 【消耗品倉庫】</a></li>
+                    <li><a href="#">[11] 【その他の倉庫】</a></li>
+                </ul>
+            </div>
+            <div class="hub-panel" style="grid-column: 1 / -1;">
+                <h3>💬 仲間との交流</h3>
+                <ul>
+                    <li><a href="#">[12] 仲間と話す</a></li>
+                    <li><a href="#">[13] 仲間の様子を見る</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

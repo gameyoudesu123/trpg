@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>AI Text RPG - アイテム売却</title>
+</head>
+<body>
+    <div class="container">
+        <div class="header">--- ◆ アイテム売却 ◆ ---</div>
+        <p style="text-align: center;">「いらねぇもんはあるかい？ まあ、それなりの値で引き取ってやるよ」</p>
+        <p style="text-align: center;">所持金: {{ pc.gold }} G</p>
+
+        <div class="hub-panel" style="margin-top:20px;">
+            <h3>【売却可能アイテムリスト】</h3>
+            <ul class="item-list">
+                {% for item in pc.inventory %}
+                <li>
+                    <div class="item-info">
+                        <strong>{{ item.name }}{% if item.stack %} x{{ item.stack }}{% endif %}</strong>
+                        <span class="item-details">
+                            └─ 売却価格: {{ item.sell_price }} G {% if item.stack %}(1個あたり){% endif %}
+                        </span>
+                    </div>
+                    <div class="item-action">
+                        <form action="{{ url_for('workshop_sell_item') }}" method="post" style="margin:0;">
+                            <input type="hidden" name="item_id" value="{{ item.id }}">
+                            <button type="submit" class="submit-button">売却</button>
+                        </form>
+                    </div>
+                </li>
+                {% else %}
+                <li>所持品は何もありません。</li>
+                {% endfor %}
+            </ul>
+            <hr>
+            <ul>
+                <li><a href="{{ url_for('workshop') }}">[戻る] 工房メニューに戻る</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

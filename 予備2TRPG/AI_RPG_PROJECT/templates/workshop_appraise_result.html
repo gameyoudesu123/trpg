@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>AI Text RPG - 鑑定完了</title>
+</head>
+<body>
+    <div class="container">
+        <div class="header">--- ◆ 工房 - 鑑定完了 ◆ ---</div>
+        <p style="text-align: center;">「ほう…こいつはとんでもねぇ代物だ。ただの指輪じゃねぇぞ。こいつの伝承によれば…」</p>
+        
+        <div class="char-sheet-wrapper">
+             <div class="char-sheet">
+.:*~*:. {{ item.name }} .:*~*:.
+  ● [装飾品]: 🌈 {{ item.name }}「{{ item.nickname }}」
+    ├─ 種別: [ [{{ item.type }}] / [{{ item.rarity }}] ]
+    ├─ 基礎性能:
+    │  ├─ ❤️ 最大HP: +{{ item.stats.hp }}
+    │  └─ 🛡️ 物防/🔮 魔防: +{{ item.stats.def }}
+    ├─ 特殊効果:
+    │  └─ ✨ {{ item.option }}
+    └─ 伝承:
+       └─ {{ item.lore }}
+            </div>
+        </div>
+        
+        <div class="hub-panel" style="margin-top: 20px;">
+            <ul>
+                <li><a href="{{ url_for('workshop') }}">[確認] 工房メニューに戻る</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
