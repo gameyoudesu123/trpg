@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拠点</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #111827;
+            background-image: url('https://placehold.co/1920x1080/1a202c/374151/png?text=Tavern+Background');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .title-font {
+            font-family: 'Kiwi Maru', serif;
+        }
+        .main-container {
+            background-color: rgba(17, 24, 39, 0.85);
+            border: 1px solid rgba(55, 65, 81, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 1rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
+        }
+        .hub-card {
+            background-color: rgba(31, 41, 55, 0.7);
+            border: 1px solid rgba(75, 85, 99, 0.5);
+            transition: all 0.3s ease-in-out;
+        }
+        .hub-card:hover {
+            border-color: #fcd34d;
+            transform: scale(1.03);
+        }
+        .hub-card-title {
+            border-bottom: 1px solid #4b5563;
+            color: #e5e7eb;
+        }
+        .menu-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            background-color: rgba(55, 65, 81, 0.9);
+            border-radius: 0.5rem;
+            transition: all 0.2s ease-in-out;
+            font-weight: 700;
+            color: #d1d5db;
+            border: 1px solid transparent;
+        }
+        .menu-link:hover {
+            background-color: #4b5563;
+            color: #ffffff;
+            border-color: #fcd34d;
+        }
+        .menu-link .icon {
+            width: 1.75rem;
+            text-align: center;
+            margin-right: 0.75rem;
+            color: #fcd34d;
+        }
+        .main-title {
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .description-text {
+            color: #9ca3af; /* text-gray-400 */
+            font-size: 0.875rem; /* text-sm */
+            margin-left: 0.5rem;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+    <div class="w-full max-w-6xl main-container p-6 md:p-10">
+        <header class="text-center mb-8">
+            <h1 class="text-5xl md:text-6xl font-bold text-gray-100 title-font tracking-widest main-title">拠 点</h1>
+            <p class="text-gray-400 mt-3 text-lg">次なる冒険への準備を整えよう。</p>
+        </header>
+
+        <div class="grid lg:grid-cols-3 gap-8">
+            <!-- メインアクション（左側） -->
+            <div class="lg:col-span-2 space-y-8">
+                <div class="hub-card rounded-xl p-6">
+                    <h2 class="text-2xl font-bold title-font hub-card-title pb-3 mb-5">🗺️ 冒険の準備</h2>
+                    <div class="space-y-3">
+                        <a href="{{ url_for('dungeon_select') }}" class="menu-link text-xl py-4">
+                            <span class="icon text-2xl"><i class="fas fa-dungeon"></i></span>
+                            ダンジョンへ向かう
+                        </a>
+                        <a href="#" class="menu-link text-xl py-4">
+                            <span class="icon text-2xl"><i class="fas fa-shield-heart"></i></span>
+                            救済の回廊へ <span class="description-text">(装備集め・経験値なし)</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="hub-card rounded-xl p-6">
+                    <h2 class="text-2xl font-bold title-font hub-card-title pb-3 mb-5">💪 キャラクター強化</h2>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <a href="#" class="menu-link py-3"><span class="icon"><i class="fas fa-user-shield"></i></span>装備管理 <span class="description-text">(付け替え)</span></a>
+                        <a href="#" class="menu-link py-3"><span class="icon"><i class="fas fa-star"></i></span>お気に入り <span class="description-text">(戦闘用アイテム)</span></a>
+                        <a href="{{ url_for('skill_vault') }}" class="menu-link py-3"><span class="icon"><i class="fas fa-book-sparkles"></i></span>スキル管理</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 施設・その他（右側） -->
+            <div class="lg:col-span-1 space-y-6">
+                 <div class="hub-card rounded-xl shadow-lg p-6">
+                    <h2 class="text-xl font-bold title-font hub-card-title pb-3 mb-4">🌐 世界</h2>
+                     <div class="space-y-3">
+                        <a href="{{ url_for('world_tier_ui') }}" class="menu-link"><span class="icon"><i class="fas fa-globe"></i></span>WorldTierを変更する</a>
+                    </div>
+                </div>
+                <div class="hub-card rounded-xl shadow-lg p-6">
+                    <h2 class="text-xl font-bold title-font hub-card-title pb-3 mb-4">🏘️ 施設</h2>
+                    <div class="space-y-3">
+                        <a href="{{ url_for('tavern') }}" class="menu-link"><span class="icon"><i class="fas fa-beer-mug-empty"></i></span>酒場へ行く <span class="description-text">(仲間探し)</span></a>
+                        <a href="{{ url_for('workshop') }}" class="menu-link"><span class="icon"><i class="fas fa-hammer"></i></span>工房へ行く <span class="description-text">(強化・売却)</span></a>
+                        <a href="{{ url_for('item_shop') }}" class="menu-link"><span class="icon"><i class="fas fa-store"></i></span>道具屋へ行く <span class="description-text">(売買)</span></a>
+                    </div>
+                </div>
+                <div class="hub-card rounded-xl shadow-lg p-6">
+                    <h2 class="text-xl font-bold title-font hub-card-title pb-3 mb-4">📦 倉庫</h2>
+                     <div class="space-y-3">
+                        <a href="{{ url_for('warehouse') }}" class="menu-link"><span class="icon"><i class="fas fa-shield-halved"></i></span>装備倉庫</a>
+                        <a href="{{ url_for('warehouse') }}" class="menu-link"><span class="icon"><i class="fas fa-pills"></i></span>消耗品倉庫</a>
+                        <a href="{{ url_for('warehouse') }}" class="menu-link"><span class="icon"><i class="fas fa-gem"></i></span>その他の倉庫</a>
+                    </div>
+                </div>
+                <div class="hub-card rounded-xl shadow-lg p-6">
+                    <h2 class="text-xl font-bold title-font hub-card-title pb-3 mb-4">💬 仲間との交流</h2>
+                     <div class="space-y-3">
+                        <a href="#" class="menu-link"><span class="icon"><i class="fas fa-comments"></i></span>仲間と話す <span class="description-text">(個別会話)</span></a>
+                        <a href="#" class="menu-link"><span class="icon"><i class="fas fa-id-card"></i></span>仲間の様子を見る <span class="description-text">(詳細)</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

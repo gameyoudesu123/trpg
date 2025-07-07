@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-TRPG キャラクター作成</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+        .title-font {
+            font-family: 'Kiwi Maru', serif;
+        }
+        .card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        .input-field {
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid #4a5568;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200 flex items-center justify-center min-h-screen p-4">
+    <div class="w-full max-w-3xl card rounded-2xl shadow-2xl p-8">
+
+        <header class="text-center mb-6">
+            <h1 class="text-4xl font-bold text-yellow-400 title-font">.:*~*:. 主人公（PC）作成 .:*~*:.</h1>
+            <p class="text-gray-400 mt-2">あなたの分身となる主人公を作成します。<br>以下のガイドに従い、情報を入力してください。</p>
+        </header>
+
+        <div class="grid md:grid-cols-2 gap-6 mb-6 text-sm">
+            <div class="bg-gray-800 p-4 rounded-lg">
+                <h3 class="font-bold text-lg text-cyan-400 title-font">💡 パーティ編成のヒント</h3>
+                <ul class="list-disc list-inside mt-2 text-gray-300 space-y-1">
+                    <li><span class="font-semibold">前衛:</span> 敵の壁となり、後衛を守る「盾役」（戦士系）</li>
+                    <li><span class="font-semibold">後衛:</span> 安全な位置から攻撃・回復を担う「回復役」（聖職者系）</li>
+                    <li class="font-semibold text-cyan-300">バランスの取れたパーティ（盾役、回復役が各1名以上）を強く推奨します。</li>
+                </ul>
+            </div>
+            <div class="bg-gray-800 p-4 rounded-lg">
+                <h3 class="font-bold text-lg text-orange-400 title-font">🔰 初心者保護期間</h3>
+                <ul class="list-disc list-inside mt-2 text-gray-300 space-y-1">
+                    <li>あなたのレベルが10に到達するまで、戦闘での被ダメージが僅かに軽減されます。</li>
+                    <li class="font-semibold text-orange-300">この保護はレベル10で完全に解除され、世界の真の厳しさに直面します。</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="bg-gray-800 p-6 rounded-lg mb-6">
+            <h2 class="text-xl font-bold mb-4 title-font border-b border-gray-600 pb-2">✍️ 入力ガイド</h2>
+            
+            <div class="mb-4">
+                <h3 class="font-semibold text-lg text-gray-300">【1. 入力項目】</h3>
+                <p class="text-gray-400">以下の項目をスペース区切りで入力します。指定しない項目はランダムで決定されます。</p>
+                <code class="block bg-gray-900 p-2 rounded-md mt-1 text-yellow-300">1.名前 2.年齢 3.性別 4.才能の種 5.クラス 6.性格(任意)</code>
+            </div>
+
+            <div class="mb-4">
+                <h3 class="font-semibold text-lg text-gray-300">【2. クラス選択肢】</h3>
+                <p class="text-gray-400">クラスは以下の4系統から選択してください。</p>
+                <code class="block bg-gray-900 p-2 rounded-md mt-1 text-yellow-300">戦士系 魔術師系 斥候系 聖職者系</code>
+            </div>
+
+            <div>
+                <h3 class="font-semibold text-lg text-gray-300">【3. 入力例】</h3>
+                <ul class="space-y-1 text-gray-400 mt-1">
+                    <li><span class="font-semibold text-green-400">全指定:</span> <code class="text-green-300">モニカ 17 女 氷魔法が好き 魔術師系 弱気だけど一生懸命</code></li>
+                    <li><span class="font-semibold text-blue-400">一部指定:</span> <code class="text-blue-300">モニカ 戦士系</code></li>
+                    <li><span class="font-semibold text-purple-400">性格・口調指定:</span> <code class="text-purple-300">モニカ 天真爛漫 ですわ口調</code></li>
+                    <li><span class="font-semibold text-red-400">完全ランダム:</span> <code class="text-red-300">完全ランダム</code> と入力（2名の候補を自動提示）</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 修正箇所: actionの宛先を 'character_creation' から 'create_character' に変更 -->
+        <form action="{{ url_for('create_character') }}" method="post">
+            <label for="player_input" class="block mb-2 font-bold text-lg text-center title-font text-yellow-300">▼ さあ、入力してください ▼</label>
+            <input type="text" id="player_input" name="player_input" class="w-full p-3 input-field rounded-md text-center text-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" placeholder="ここに入力...">
+            <button type="submit" class="w-full mt-4 bg-yellow-600 hover:bg-yellow-500 text-white font-bold py-3 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105">
+                運命を決定する
+            </button>
+        </form>
+
+    </div>
+</body>
+</html>

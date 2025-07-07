@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>エンシェント鑑定 - 工房</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans JP', sans-serif; background-color: #1a202c; color: #cbd5e1; }
+        .title-font { font-family: 'Kiwi Maru', serif; }
+        .item-row a { display: block; transition: background-color 0.2s; }
+        .item-row a:hover { background-color: #2d3748; }
+    </style>
+</head>
+<body class="bg-gray-900 p-4 md:p-8">
+    <div class="w-full max-w-3xl mx-auto">
+        <h1 class="text-3xl font-bold text-gray-200 title-font text-center py-4">--- ◆ 工房 - 鑑定対象選択 ◆ ---</h1>
+        <p class="text-center text-gray-400 mb-6 italic">「どれを視るんだ？ 俺の眼にかかれば、どんな逸物も正体を現すぜ」</p>
+        
+        <div class="bg-gray-800 rounded-lg shadow-lg">
+            <ul class="divide-y divide-gray-700">
+                {% if unidentified_items %}
+                    {% for item, slot_info in unidentified_items %}
+                    <li class="item-row">
+                        <a href="{{ url_for('workshop_appraise_confirm', slot_info=slot_info) }}" class="p-4 flex items-center">
+                            <span class="text-2xl mr-4">🌈</span>
+                            <span class="font-semibold">{{ item.name }}</span>
+                        </a>
+                    </li>
+                    {% endfor %}
+                {% else %}
+                    <li class="p-4 text-center text-gray-500">鑑定可能なアイテムは所持していない。</li>
+                {% endif %}
+            </ul>
+        </div>
+        <div class="mt-8 text-center">
+            <a href="{{ url_for('workshop') }}" class="text-gray-400 hover:text-white transition">工房メニューに戻る</a>
+        </div>
+    </div>
+</body>
+</html>

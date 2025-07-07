@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>酒場</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #1a202c;
+            color: #cbd5e1;
+        }
+        .title-font {
+            font-family: 'Kiwi Maru', serif;
+        }
+        .menu-container {
+            background-color: #2d3748;
+            border: 1px solid #4a5568;
+        }
+        .menu-category {
+            border-bottom: 1px dashed #4a5568;
+        }
+        .menu-item {
+            display: block;
+            padding: 0.5rem 1rem;
+            transition: background-color 0.2s;
+            cursor: pointer;
+        }
+        .menu-item:hover {
+            background-color: #4a5568;
+        }
+        .input-guide {
+            background-color: #1a202c;
+            border-top: 2px solid #4a5568;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 flex items-center justify-center min-h-screen p-4">
+    <div class="w-full max-w-3xl">
+        <p class="text-center text-gray-400 mb-4 italic">
+            （酒場には、様々な背景を持つ冒険者たちが集い、情報を交換したり、新たな仲間を探したりしているようだ。）
+        </p>
+
+        <div class="menu-container rounded-lg shadow-lg overflow-hidden">
+            <h1 class="text-3xl font-bold text-yellow-300 title-font text-center py-4 bg-gray-800">.:*~*:. 酒場 .:*~*:.</h1>
+            
+            <form id="tavern-form" action="{{ url_for('tavern_action') }}" method="post">
+                <input type="hidden" id="command-input" name="command">
+                <div class="p-4 md:p-6">
+                    <!-- 各メニュー項目をクリック可能にする -->
+                    <div class="menu-category pb-4 mb-4">
+                        <h2 class="text-xl font-semibold mb-2 text-yellow-400">--- [🙋 仲間を探す] -------------------------</h2>
+                        <ul class="space-y-1 text-gray-300">
+                            <li class="menu-item rounded" onclick="submitCommand('1')">[1] ランダムに仲間候補3人を探す （現在のパーティ人数: {{ game_state.party|length }}/4 名）</li>
+                            {% if game_state.party|length == 1 %}
+                            <li class="pl-6 text-sm text-cyan-400">（まずは3人の仲間を探すべきだ）</li>
+                            {% endif %}
+                            <li class="menu-item rounded" onclick="submitCommand('2')">[2] 盾役（前衛系）の仲間候補3人を探す</li>
+                            <li class="menu-item rounded" onclick="submitCommand('3')">[3] 攻撃的前衛の仲間候補3人を探す</li>
+                            <li class="menu-item rounded" onclick="submitCommand('4')">[4] 斥候系（後衛物理）の仲間候補3人を探す</li>
+                            <li class="menu-item rounded" onclick="submitCommand('5')">[5] 魔法攻撃職（後衛系）の仲間候補3人探す</li>
+                            <li class="menu-item rounded" onclick="submitCommand('6')">[6] 回復・支援職（後衛系）の仲間候補3人を探す</li>
+                        </ul>
+                    </div>
+
+                    <div class="menu-category pb-4 mb-4">
+                        <h2 class="text-xl font-semibold mb-2 text-yellow-400">--- [👥 パーティ管理] -----------------------</h2>
+                        <ul class="space-y-1 text-gray-300">
+                            <li class="menu-item rounded" onclick="submitCommand('7')">[7] パーティ編成を変更する</li>
+                            <li class="menu-item rounded" onclick="submitCommand('8')">[8] 仲間の様子を見る (ステータス詳細)</li>
+                        </ul>
+                    </div>
+
+                    <div class="menu-category pb-4 mb-4">
+                        <h2 class="text-xl font-semibold mb-2 text-yellow-400">--- [💬 仲間との交流] -----------------------</h2>
+                        <ul class="space-y-1 text-gray-300">
+                            <li class="menu-item rounded" onclick="submitCommand('9')">[9] 仲間と話す</li>
+                            <li class="pl-4 text-sm text-gray-400">（会話回数はダンジョンボス1体討伐ごとに回復）</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="menu-category pb-4 mb-4">
+                        <h2 class="text-xl font-semibold mb-2 text-yellow-400">--- [✈️ 移動] -------------------------------</h2>
+                        <ul class="space-y-1 text-gray-300">
+                             <li class="menu-item rounded" onclick="submitCommand('10')">[10] 工房へ行く</li>
+                             <li class="menu-item rounded" onclick="submitCommand('11')">[11] 道具屋へ行く</li>
+                             <li class="menu-item rounded" onclick="submitCommand('12')">[12] 倉庫へ行く</li>
+                             <li class="menu-item rounded" onclick="submitCommand('13')">[13] スキル保管庫へ行く</li>
+                             <li class="menu-item rounded" onclick="submitCommand('14')">[14] ダンジョンへ向かう</li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h2 class="text-xl font-semibold mb-2 text-yellow-400">--- [🚪 施設を出る] -------------------------</h2>
+                        <ul class="space-y-1 text-gray-300">
+                            <li class="menu-item rounded" onclick="submitCommand('15')">[15] 酒場を出る (拠点メインメニューへ戻る)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="input-guide p-4">
+                    <div class="mb-4">
+                        <h3 class="font-bold text-lg mb-2">✍️【入力ガイド】</h3>
+                        <div class="pl-2 text-sm">
+                            <p class="font-semibold">【基本】</p>
+                            <p class="mb-2 pl-2">・希望する行動の番号をクリックするか、入力欄に入力してください。</p>
+                            <p class="font-semibold">【応用：仲間探し】</p>
+                            <p class="pl-2">・仲間を探す番号(1～6)の後、[スペース]か[,]で区切り性別（男, 女）を指定できます。</p>
+                            <p class="pl-2">・例：「2 女」⇒ 女性の盾役の仲間候補を表示します。</p>
+                        </div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <input type="text" id="manual-command" class="w-full p-2 bg-gray-900 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" placeholder="コマンドを入力...">
+                        <button type="button" onclick="submitManualCommand()" class="bg-yellow-600 hover:bg-yellow-500 text-gray-900 font-bold py-2 px-4 rounded-md transition">決定</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        function submitCommand(commandValue) {
+            document.getElementById('command-input').value = commandValue;
+            document.getElementById('tavern-form').submit();
+        }
+        function submitManualCommand() {
+            const manualCommand = document.getElementById('manual-command').value;
+            if (manualCommand) {
+                document.getElementById('command-input').value = manualCommand;
+                document.getElementById('tavern-form').submit();
+            }
+        }
+    </script>
+</body>
+</html>

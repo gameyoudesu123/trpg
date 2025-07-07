@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>会話の結果 - 酒場</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Noto Sans JP', sans-serif; 
+            background-color: #111827; 
+            color: #cbd5e1;
+            background-image: url('https://placehold.co/1920x1080/1a202c/374151/png?text=Tavern+Interior');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .title-font { font-family: 'Kiwi Maru', serif; }
+        .main-container { 
+            background-color: rgba(17, 24, 39, 0.92);
+            border: 1px solid rgba(55, 65, 81, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        .conversation-log {
+            border-bottom: 1px dashed #4a5568;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+    <div class="w-full max-w-3xl main-container rounded-2xl shadow-2xl p-6 md:p-8">
+        <h1 class="text-3xl font-bold text-yellow-300 title-font text-center mb-6">会話の記録</h1>
+        
+        <div class="space-y-6 mb-8">
+            {% for result in results %}
+            <div class="conversation-log pb-6">
+                <p class="text-gray-300 italic mb-4">{{ result.scenario }}</p>
+                <div class="bg-gray-800 p-3 rounded-md text-green-400 font-mono text-sm">
+                    {{ result.log }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="text-center">
+            <a href="{{ url_for('tavern') }}" class="inline-block bg-yellow-600 hover:bg-yellow-500 text-gray-900 font-bold py-2 px-8 rounded-md transition">酒場に戻る</a>
+        </div>
+    </div>
+</body>
+</html>

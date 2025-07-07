@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>AI Text RPG - 戦闘</title>
+    <style>
+        .target-symbol {
+            font-weight: bold;
+            color: #f6ad55; /* オレンジ色 */
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hub-panel">
+            <h3>【敵パーティ】</h3>
+            <ul class="combatant-list">
+                {# ★★★★★ 修正点 ★★★★★ #}
+                {# 敵データに埋め込まれた記号を直接表示する #}
+                {% for enemy in combat_state.enemies %}
+                <li>
+                    <span class="target-symbol">({{ enemy.symbol if 'symbol' in enemy else ' ' }})</span>
+                    {{ enemy.name }} (HP: {{ enemy.hp }}/{{ enemy.max_hp }})
+                </li>
+                {% endfor %}
+            </ul>
+            <hr>
+            <h3>【味方パーティ】</h3>
+            <ul class="combatant-list">
+                 {% for member in combat_state.party %}
+                <li>{{ member.name }} (HP: {{ member.hp }}/{{ member.max_hp }})</li>
+                {% endfor %}
+            </ul>
+        </div>
+        
+        <div class="hub-panel" style="margin-top:20px; min-height: 100px;">
+            {% for message in combat_state.log %}
+            <p>・{{ message }}</p>
+            {% endfor %}
+        </div>
+
+        <div class="hub-panel" style="margin-top:20px;">
+            <h3>【行動順】</h3>
+            <p>
+                {% for combatant in combat_state.action_order %}
+                    <span {% if loop.index0 == combat_state.current_actor_index %}style="color:yellow; font-weight:bold;"{% endif %}>
+                        {{ combatant.name }}
+                    </span>
+                    {% if not loop.last %} → {% endif %}
+                {% endfor %}
+            </p>
+            <hr>
+            {% if combat_state.current_actor and combat_state.current_actor.type == 'player' %}
+            <form action="{{ url_for('combat_action') }}" method="post">
+                <h3>▼ [ {{ combat_state.current_actor.name }} ] の行動 ▼</h3>
+                <p>
+                    {# TODO: 設計書【4.9】に従い、スキル等をここに表示 #}
+                    [通常攻撃]
+                </p>
+                <div class="input-form">
+                    <input type="text" name="command_input" class="input-area" placeholder="例: a,b (対象aとbに攻撃)" autofocus>
+                    <button type="submit" class="submit-button">実行</button>
+                </div>
+            </form>
+            {% elif combat_state.current_actor %}
+            <form action="{{ url_for('combat_action') }}" method="post">
+                 <h3>▼ [ {{ combat_state.current_actor.name }} ] の行動 ▼</h3>
+                 <p>（仲間、または敵がどう動くか見守っている...）</p>
+                 <button type="submit" name="command_input" value="next" class="submit-button">次へ</button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>倉庫</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans JP', sans-serif; background-color: #1a202c; color: #cbd5e1; }
+        .title-font { font-family: 'Kiwi Maru', serif; }
+        .main-container { background-color: rgba(45, 55, 72, 0.9); border: 1px solid #4a5568; }
+        .item-list-container { background-color: rgba(30, 41, 59, 0.8); }
+        .item-row:hover { background-color: #374151; }
+        .action-button {
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        .deposit-button { background-color: #1d4ed8; color: white; }
+        .deposit-button:hover { background-color: #1e40af; }
+        .withdraw-button { background-color: #16a34a; color: white; }
+        .withdraw-button:hover { background-color: #15803d; }
+    </style>
+</head>
+<body class="bg-gray-900 p-4 md:p-8">
+    <div class="w-full max-w-6xl mx-auto">
+        <div class="text-center mb-4">
+            <p class="text-gray-400 italic">「荷物の整理かい？ ここなら安全だ。ゆっくり見ていきな。」</p>
+        </div>
+        <div class="main-container rounded-lg shadow-lg overflow-hidden">
+            <h1 class="text-3xl font-bold text-gray-200 title-font text-center py-4 bg-gray-800">--- ◆ 倉庫 ◆ ---</h1>
+            
+            <div class="grid grid-cols-2 gap-4 p-6">
+                <!-- インベントリ -->
+                <div>
+                    <h2 class="text-xl font-semibold mb-3 text-gray-300">あなたの所持品 ({{ inventory_items|length }})</h2>
+                    <div class="item-list-container rounded-lg p-2 h-96 overflow-y-auto">
+                        <ul class="divide-y divide-gray-700">
+                            <!-- 修正点: ループの変数を (index, item) に修正 -->
+                            {% for index, item in inventory_items %}
+                            <li class="p-2 flex justify-between items-center item-row">
+                                <div>
+                                    <span class="font-semibold">{{ item.rarity_symbol | safe if item.rarity_symbol else '・' }} {{ item.name }}</span>
+                                </div>
+                                <form action="{{ url_for('warehouse_deposit') }}" method="post" class="inline">
+                                    <input type="hidden" name="item_index" value="{{ index }}">
+                                    <button type="submit" class="action-button deposit-button">預ける</button>
+                                </form>
+                            </li>
+                            {% else %}
+                            <li class="p-4 text-center text-gray-500">所持品はありません</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 倉庫 -->
+                <div>
+                    <h2 class="text-xl font-semibold mb-3 text-gray-300">倉庫 ({{ warehouse_items|length }}/100)</h2>
+                    <div class="item-list-container rounded-lg p-2 h-96 overflow-y-auto">
+                        <ul class="divide-y divide-gray-700">
+                            <!-- 修正点: ループの変数を (index, item) に修正 -->
+                            {% for index, item in warehouse_items %}
+                            <li class="p-2 flex justify-between items-center item-row">
+                                <div>
+                                    <span class="font-semibold">{{ item.rarity_symbol | safe if item.rarity_symbol else '・' }} {{ item.name }}</span>
+                                </div>
+                                <form action="{{ url_for('warehouse_withdraw') }}" method="post" class="inline">
+                                    <input type="hidden" name="item_index" value="{{ index }}">
+                                    <button type="submit" class="action-button withdraw-button">引き出す</button>
+                                </form>
+                            </li>
+                             {% else %}
+                            <li class="p-4 text-center text-gray-500">倉庫は空です</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-800 p-4 text-center">
+                 <a href="{{ url_for('hub') }}" class="text-gray-400 hover:text-white transition">拠点に戻る</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

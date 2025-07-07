@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>AI Text RPG - {{ dungeon_state.name }}</title>
+</head>
+<body>
+    <div class="container">
+        <div class="header">--- {{ dungeon_state.name }} - {{ dungeon_state.current_floor }}階層 ---</div>
+        
+        <p>（{{ dungeon_state.description }}）</p>
+        <p>目の前には、奥へと続く通路が見える。</p>
+
+        <div class="hub-panel" style="margin-top:20px;">
+            <form action="{{ url_for('dungeon_action') }}" method="post">
+                <h3>▼ 行動選択 ▼</h3>
+                <ul class="item-list">
+                    <li>
+                        <div class="item-info"><strong>[1] 先に進む</strong></div>
+                        <div class="item-action">
+                            <button type="submit" name="action" value="proceed" class="submit-button">実行</button>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-info"><strong>[2] 周囲を調べる</strong></div>
+                         <div class="item-action">
+                            <button type="submit" name="action" value="search" class="submit-button">実行</button>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-info"><strong>[3] 街へ戻る</strong></div>
+                         <div class="item-action">
+                            <a href="{{ url_for('hub') }}" class="submit-button" style="text-decoration: none; padding: 10px 20px;">実行</a>
+                        </div>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

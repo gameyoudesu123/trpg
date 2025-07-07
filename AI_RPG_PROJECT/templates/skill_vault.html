@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>スキル保管庫</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans JP', sans-serif; background-color: #1a202c; color: #cbd5e1; }
+        .title-font { font-family: 'Kiwi Maru', serif; }
+        .main-container { background-color: rgba(45, 55, 72, 0.9); border: 1px solid #4a5568; }
+        .character-column { background-color: rgba(30, 41, 59, 0.8); }
+        .skill-item { transition: background-color 0.2s; }
+        .skill-item:hover { background-color: #374151; }
+        .action-button {
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        .store-button { background-color: #ca8a04; color: white; }
+        .store-button:hover { background-color: #a16207; }
+        .equip-button { background-color: #16a34a; color: white; }
+        .equip-button:hover { background-color: #15803d; }
+    </style>
+</head>
+<body class="bg-gray-900 p-4 md:p-8">
+    <div class="w-full max-w-7xl mx-auto">
+        <div class="text-center mb-4">
+            <p class="text-gray-400 italic">「知識は力だ。古の技を、ここで管理するといい。」</p>
+        </div>
+        <div class="main-container rounded-lg shadow-lg overflow-hidden">
+            <h1 class="text-3xl font-bold text-gray-200 title-font text-center py-4 bg-gray-800">--- ◆ スキル保管庫 ◆ ---</h1>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 p-6">
+                <!-- スキル保管庫 -->
+                <div class="lg:col-span-1">
+                    <h2 class="text-xl font-semibold mb-3 text-gray-300">保管庫のスキル ({{ skill_vault|length }}/100)</h2>
+                    <div class="character-column rounded-lg p-2 h-96 overflow-y-auto">
+                        <ul class="divide-y divide-gray-700">
+                           {% for index, skill in skill_vault %}
+                           <li class="p-2 flex justify-between items-center skill-item">
+                               <span>{{ skill }}</span>
+                               <form action="{{ url_for('skill_vault_equip') }}" method="post">
+                                   <input type="hidden" name="skill_index" value="{{ index }}">
+                                   <select name="character_index" class="bg-gray-900 text-xs rounded border border-gray-600 mr-2">
+                                       {% for char_idx, character in party_members %}
+                                       <option value="{{ char_idx }}">{{ character.name }}</option>
+                                       {% endfor %}
+                                   </select>
+                                   <button type="submit" class="action-button equip-button">装備</button>
+                               </form>
+                           </li>
+                           {% else %}
+                           <li class="p-4 text-center text-gray-500">保管庫は空です</li>
+                           {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- パーティメンバーのスキル -->
+                <div class="lg:col-span-2">
+                    <h2 class="text-xl font-semibold mb-3 text-gray-300">パーティメンバーのスキル</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {% for char_index, character in party_members %}
+                        <div class="character-column rounded-lg p-3">
+                            <h3 class="font-bold border-b border-gray-600 pb-2 mb-2">{{ character.name }}</h3>
+                            <ul class="space-y-1">
+                                <!-- 修正点: character.skills_enumerated を使用 -->
+                                {% for skill_index, skill in character.skills_enumerated %}
+                                <li class="p-1 flex justify-between items-center skill-item">
+                                    <span>{{ skill }}</span>
+                                    <form action="{{ url_for('skill_vault_store') }}" method="post">
+                                        <!-- 修正点: valueにchar_indexを直接使用 -->
+                                        <input type="hidden" name="character_index" value="{{ char_index }}">
+                                        <input type="hidden" name="skill_index" value="{{ skill_index }}">
+                                        <button type="submit" class="action-button store-button">保管</button>
+                                    </form>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+             <div class="bg-gray-800 p-4 text-center">
+                 <a href="{{ url_for('hub') }}" class="text-gray-400 hover:text-white transition">拠点に戻る</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

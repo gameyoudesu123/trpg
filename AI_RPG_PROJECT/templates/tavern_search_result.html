@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>仲間を探す - 酒場</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans JP', sans-serif; background-color: #111827; color: #cbd5e1; }
+        .title-font { font-family: 'Kiwi Maru', serif; }
+        .char-sheet-container { background-color: #1f2937; border: 1px solid #4b5563; white-space: pre-wrap; font-family: monospace; }
+        .introduction-text { font-family: 'Kiwi Maru', serif; font-size: 1.125rem; }
+        .control-panel { background-color: #2d3748; border-top: 2px solid #4b5563; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-4xl font-bold text-yellow-300 title-font text-center mb-8">.:*~*:. 仲間候補 .:*~*:.</h1>
+
+        {% for companion in companions %}
+        <div class="mb-8">
+            <div class="char-sheet-container p-4 rounded-lg shadow-md">
+                <p>.:*~*:. {{ companion.name }}の現状 .:*~*:.</p>
+                <p>+--[ 基本情報 ]---------------------------+</p>
+                <p>| ・名前     : {{ companion.name }} (Lv.{{ companion.level }})</p>
+                <p>| ・クラス   : {{ companion.class_name }}</p>
+                <p>+------------------------------------------+</p>
+                <p>（※これは簡易表示です。後ほど完全版を実装します）</p>
+            </div>
+            <p class="introduction-text text-center mt-4 p-4 bg-gray-800 rounded-lg">{{ companion.introduction }}</p>
+        </div>
+        {% endfor %}
+
+        <div class="control-panel p-6 rounded-lg shadow-lg mt-12">
+            <form action="{{ url_for('tavern_contract') }}" method="post">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h2 class="text-xl font-semibold mb-2 text-yellow-400">【🙋 仲間を雇う】 (現在のパーティ: {{ game_state.party|length }}/4 名)</h2>
+                        <ul class="space-y-2">
+                            {% for companion in companions %}
+                            <li><label class="flex items-center"><input type="checkbox" name="hire" value="{{ loop.index }}" class="mr-2 h-4 w-4 bg-gray-600 border-gray-500 rounded text-yellow-500 focus:ring-yellow-400"> [{{ loop.index }}] {{ companion.name }} ({{ companion.class_name }}) - {{ companion.contract_fee }}G</label></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-semibold mb-2 text-yellow-400">【🔄 候補を更新】</h2>
+                        <ul class="space-y-2">
+                            <li>[4] 候補を再生成する (リロード)</li>
+                            <li>[5] 🔍 盾役（前衛系）の仲間候補3人を探す</li>
+                        </ul>
+                         <h2 class="text-xl font-semibold mt-4 mb-2 text-yellow-400">【🚪 酒場を出る】</h2>
+                        <ul class="space-y-2">
+                            <li>[10] 拠点メニューへ戻る</li>
+                            <li>[11] ダンジョンへ向かう</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-6 border-t border-gray-600 pt-4">
+                    <h3 class="font-bold text-lg mb-2">✍️【入力ガイド】</h3>
+                    <p class="text-sm text-gray-400">・雇う仲間のチェックボックスを入れ、下のボタンを押してください。（複数選択可）</p>
+                    <p class="text-sm text-gray-400">・候補を更新する場合は、対応する番号を入力して決定してください。</p>
+                    <div class="flex space-x-2 mt-4">
+                         <input type="text" name="command_other" class="w-full p-2 bg-gray-900 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" placeholder="更新コマンドなどを入力...">
+                        <button type="submit" class="bg-yellow-600 hover:bg-yellow-500 text-gray-900 font-bold py-2 px-6 rounded-md transition">決定</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工房</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans JP', sans-serif; background-color: #1a202c; color: #cbd5e1; }
+        .title-font { font-family: 'Kiwi Maru', serif; }
+        .menu-container { background-color: rgba(45, 55, 72, 0.9); border: 1px solid #4a5568; }
+        .menu-item a { 
+            display: flex; 
+            align-items: center;
+            padding: 0.75rem 1.5rem; 
+            transition: background-color 0.2s; 
+            border-radius: 0.5rem; 
+        }
+        .menu-item a:hover { background-color: #4a5568; }
+        .menu-item .icon {
+            width: 1.5rem;
+            margin-right: 0.75rem;
+            color: #a0aec0; /* gray-500 */
+        }
+    </style>
+</head>
+<body class="bg-gray-900 flex items-center justify-center min-h-screen p-4">
+    <div class="w-full max-w-2xl">
+        <div class="text-center mb-4">
+            <p class="text-gray-400 italic">「よう、何か用かい？ 腕は確かだぜ。」</p>
+        </div>
+        <div class="menu-container rounded-lg shadow-lg overflow-hidden">
+            <h1 class="text-3xl font-bold text-gray-200 title-font text-center py-4 bg-gray-800">--- ◆ 工房 ◆ ---</h1>
+            <div class="p-6">
+                <div class="mb-6">
+                    <h2 class="text-xl font-semibold mb-3 text-gray-300">【装備強化】</h2>
+                    <ul class="space-y-2">
+                        {% for member in game_state.party %}
+                        <li class="menu-item">
+                            <a href="{{ url_for('workshop_enhance_character_select', character_index=loop.index0) }}">
+                                <span class="text-2xl mr-3">{{ member.icon | safe if member.icon else '❓' }}</span>
+                                <span>{{ member.name }}の装備を強化する</span>
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="mb-6 space-y-3">
+                    <a href="{{ url_for('workshop_sell_ui') }}" class="menu-item text-lg font-bold bg-gray-700 hover:bg-gray-600">
+                        <i class="fas fa-hand-holding-dollar icon"></i>アイテムを売却する
+                    </a>
+                    <a href="{{ url_for('workshop_appraise_ui') }}" class="menu-item text-lg font-bold bg-gray-700 hover:bg-gray-600">
+                        <i class="fas fa-magnifying-glass-sparkles icon"></i>エンシェントを鑑定する
+                    </a>
+                </div>
+
+                <div>
+                    <h2 class="text-xl font-semibold mb-3 text-gray-300">--- [✈️ 移動] ---</h2>
+                    <div class="grid grid-cols-2 gap-2 text-center">
+                        <a href="{{ url_for('tavern') }}" class="menu-item"><i class="fas fa-beer-mug-empty icon"></i>酒場へ</a>
+                        <a href="{{ url_for('item_shop') }}" class="menu-item"><i class="fas fa-store icon"></i>道具屋へ</a>
+                        <a href="{{ url_for('warehouse') }}" class="menu-item"><i class="fas fa-box-archive icon"></i>倉庫へ</a>
+                        <a href="{{ url_for('skill_vault') }}" class="menu-item"><i class="fas fa-book-sparkles icon"></i>スキル保管庫へ</a>
+                        <a href="{{ url_for('dungeon_select') }}" class="menu-item"><i class="fas fa-dungeon icon"></i>ダンジョンへ</a>
+                        <a href="{{ url_for('hub') }}" class="menu-item"><i class="fas fa-house icon"></i>拠点に戻る</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
